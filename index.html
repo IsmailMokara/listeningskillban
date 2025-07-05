@@ -2,6 +2,7 @@
 <html lang="bn">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>বাংলা বর্ণমালা শ্রবণ খেলা</title>
   <style>
     body {
@@ -50,6 +51,52 @@
       font-size: 20px;
       margin-top: 15px;
     }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .letter {
+        font-size: 20px;
+        padding: 8px;
+        width: 40px;
+        height: 40px;
+      }
+
+      .consonant-grid {
+        grid-template-columns: repeat(5, 50px);
+      }
+
+      #timer {
+        font-size: 18px;
+      }
+
+      button {
+        font-size: 16px;
+        padding: 8px 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .letter {
+        font-size: 16px;
+        padding: 6px;
+        width: 30px;
+        height: 30px;
+      }
+
+      .consonant-grid {
+        grid-template-columns: repeat(3, 50px);
+      }
+
+      button {
+        font-size: 14px;
+        padding: 6px 12px;
+      }
+
+      #timer {
+        font-size: 16px;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -179,11 +226,11 @@
   }
 </script>
 
-    <footer>
-        </br>
-		<img src="ismail.jpg" alt="Ismail">
-        <span>Presented by: Ismail Mokara </span><a href="https://web.facebook.com/ismail.mokara">Me in facebook</a>
-    </footer>
+<footer>
+    </br>
+	<img src="ismail.jpg" alt="Ismail">
+    <span>Presented by: Ismail Mokara </span><a href="https://web.facebook.com/ismail.mokara">Me in facebook</a>
+</footer>
 
 </body>
 </html>
