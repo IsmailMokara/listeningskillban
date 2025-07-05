@@ -12,17 +12,24 @@
     }
 
     .vowel-row {
-      display: flex;
-      flex-wrap: nowrap;
-      justify-content: center;
+      display: grid;
+      grid-template-columns: repeat(6, 50px); /* 6টি বর্ণ এক লাইনে থাকবে */
       gap: 10px;
+      justify-content: center;
       margin-top: 20px;
-      flex-direction: row;
+    }
+
+    .second-row-vowel {
+      display: grid;
+      grid-template-columns: repeat(5, 50px); /* 5টি বর্ণ এক লাইনে থাকবে */
+      gap: 10px;
+      justify-content: center;
+      margin-top: 20px;
     }
 
     .consonant-grid {
       display: grid;
-      grid-template-columns: repeat(10, 50px);
+      grid-template-columns: repeat(5, 50px); /* প্রতি লাইনে ৫টি বর্ণ */
       gap: 10px;
       justify-content: center;
       margin-top: 20px;
@@ -52,49 +59,10 @@
       margin-top: 15px;
     }
 
-    /* Responsive Design */
-    @media (max-width: 768px) {
-      .letter {
-        font-size: 20px;
-        padding: 8px;
-        width: 40px;
-        height: 40px;
-      }
-
-      .consonant-grid {
-        grid-template-columns: repeat(5, 50px);
-      }
-
-      #timer {
-        font-size: 18px;
-      }
-
-      button {
-        font-size: 16px;
-        padding: 8px 16px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .letter {
-        font-size: 16px;
-        padding: 6px;
-        width: 30px;
-        height: 30px;
-      }
-
-      .consonant-grid {
-        grid-template-columns: repeat(3, 50px);
-      }
-
-      button {
-        font-size: 14px;
-        padding: 6px 12px;
-      }
-
-      #timer {
-        font-size: 16px;
-      }
+    /* কাস্টমাইজ করা */
+    .vowel-row .vowel {
+      width: 50px;
+      text-align: center;
     }
 
   </style>
@@ -108,14 +76,16 @@
 
 <div id="timer">⏱ সময়: 0 সেকেন্ড</div>
 
-<!-- স্বরবর্ণ (এক লাইনে) -->
+<!-- স্বরবর্ণ (উপরে ৬টি, নিচে ৫টি) -->
 <div id="vowels" class="vowel-row"></div>
+<div id="second-row-vowels" class="second-row-vowel"></div>
 
 <!-- ব্যঞ্জনবর্ণ (গ্রিডে) -->
 <div id="consonants" class="consonant-grid"></div>
 
 <script>
-  const vowels = ['অ', 'আ', 'ই', 'ঈ', 'উ', 'ঊ', 'ঋ', 'এ', 'ঐ', 'ও', 'ঔ'];
+  const vowels = ['অ', 'আ', 'ই', 'ঈ', 'উ', 'ঊ'];  // উপরে থাকবে
+  const secondRowVowels = ['ঋ', 'এ', 'ঐ', 'ও', 'ঔ'];  // নিচে থাকবে
   const consonants = [
     'ক', 'খ', 'গ', 'ঘ', 'ঙ',
     'চ', 'ছ', 'জ', 'ঝ', 'ঞ',
@@ -126,7 +96,7 @@
     'ড়', 'ঢ়', 'য়', 'ৎ', 'ং', 'ঃ', 'ঁ'
   ];
 
-  const letters = [...vowels, ...consonants];
+  const letters = [...vowels, ...secondRowVowels, ...consonants];
   const playedLetters = new Set();
   let currentLetter = '';
   let timerInterval;
@@ -134,6 +104,7 @@
   let lettersPlayedCount = 0;
 
   const vowelsDiv = document.getElementById('vowels');
+  const secondRowVowelsDiv = document.getElementById('second-row-vowels');
   const consonantsDiv = document.getElementById('consonants');
 
   function createLetterTiles(lettersArray, container) {
@@ -146,7 +117,9 @@
     });
   }
 
+  // উপরের লাইনে ৬টি স্বরবর্ণ এবং নিচের লাইনে ৫টি স্বরবর্ণ
   createLetterTiles(vowels, vowelsDiv);
+  createLetterTiles(secondRowVowels, secondRowVowelsDiv);
   createLetterTiles(consonants, consonantsDiv);
 
   function playSound(letter) {
