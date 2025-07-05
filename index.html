@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <title>বাংলা বর্ণমালা শ্রবণ খেলা</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .vowel-row {
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+      flex-direction: row;
+    }
+
+    .consonant-grid {
+      display: grid;
+      grid-template-columns: repeat(10, 50px);
+      gap: 10px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .letter {
+      font-size: 24px;
+      padding: 10px;
+      border: 2px solid #444;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .letter:hover {
+      background-color: #e0e0e0;
+    }
+
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    #timer {
+      font-size: 20px;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+
+<h2>🎧 শ্রবণ করো এবং সঠিক বাংলা বর্ণ চিহ্নিত করো</h2>
+
+<button onclick="startGame()">▶ শুরু</button>
+<button onclick="resetGame()">🔁 রিসেট</button>
+
+<div id="timer">⏱ সময়: 0 সেকেন্ড</div>
+
+<!-- স্বরবর্ণ (এক লাইনে) -->
+<div id="vowels" class="vowel-row"></div>
+
+<!-- ব্যঞ্জনবর্ণ (গ্রিডে) -->
+<div id="consonants" class="consonant-grid"></div>
+
+<script>
+  const vowels = ['অ', 'আ', 'ই', 'ঈ', 'উ', 'ঊ', 'ঋ', 'এ', 'ঐ', 'ও', 'ঔ'];
+  const consonants = [
+    'ক', 'খ', 'গ', 'ঘ', 'ঙ',
+    'চ', 'ছ', 'জ', 'ঝ', 'ঞ',
+    'ট', 'ঠ', 'ড', 'ঢ', 'ণ',
+    'ত', 'থ', 'দ', 'ধ', 'ন',
+    'প', 'ফ', 'ব', 'ভ', 'ম',
+    'য', 'র', 'ল', 'শ', 'ষ', 'স', 'হ',
+    'ড়', 'ঢ়', 'য়', 'ৎ', 'ং', 'ঃ', 'ঁ'
+  ];
+
+  const letters = [...vowels, ...consonants];
+  const playedLetters = new Set();
+  let currentLetter = '';
+  let timerInterval;
+  let seconds = 0;
+  let lettersPlayedCount = 0;
+
+  const vowelsDiv = document.getElementById('vowels');
+  const consonantsDiv = document.getElementById('consonants');
+
+  function createLetterTiles(lettersArray, container) {
+    lettersArray.forEach(letter => {
+      const div = document.createElement('div');
+      div.className = 'letter';
+      div.innerText = letter;
+      div.onclick = () => checkAnswer(letter, div);
+      container.appendChild(div);
+    });
+  }
+
+  createLetterTiles(vowels, vowelsDiv);
+  createLetterTiles(consonants, consonantsDiv);
+
+  function playSound(letter) {
+    const audio = new Audio(`${letter}.mp3`);
+    audio.play();
+  }
+
+  function startTimer() {
+    seconds = 0;
+    document.getElementById('timer').innerText = `⏱ সময়: 0 সেকেন্ড`;
+    timerInterval = setInterval(() => {
+      seconds++;
+      document.getElementById('timer').innerText = `⏱ সময়: ${seconds} সেকেন্ড`;
+    }, 1000);
+  }
+
+  function stopTimer() {
+    clearInterval(timerInterval);
+  }
+
+  function startGame() {
+    playedLetters.clear();
+    lettersPlayedCount = 0;
+    stopTimer();
+    startTimer();
+    nextLetter();
+  }
+
+  function nextLetter() {
+    if (lettersPlayedCount >= letters.length) {
+      stopTimer();
+      alert('অভিনন্দন! তুমি সব বাংলা বর্ণ সঠিকভাবে চিহ্নিত করেছো।');
+      return;
+    }
+
+    let randomIndex;
+    do {
+      randomIndex = Math.floor(Math.random() * letters.length);
+    } while (playedLetters.has(letters[randomIndex]));
+
+    currentLetter = letters[randomIndex];
+    playedLetters.add(currentLetter);
+    playSound(currentLetter);
+  }
+
+  function checkAnswer(selected, div) {
+    if (div.style.backgroundColor === 'lightgreen') return;
+
+    const allLetters = document.querySelectorAll('.letter');
+    allLetters.forEach(letterDiv => {
+      if (letterDiv.style.backgroundColor !== 'lightgreen') {
+        letterDiv.style.backgroundColor = '';
+      }
+    });
+
+    if (selected === currentLetter) {
+      div.style.backgroundColor = 'lightgreen';
+      lettersPlayedCount++;
+      nextLetter();
+    } else {
+      div.style.backgroundColor = '#FF6347';
+      playSound(currentLetter);
+    }
+  }
+
+  function resetGame() {
+    stopTimer();
+    document.getElementById('timer').innerText = `⏱ সময়: 0 সেকেন্ড`;
+    currentLetter = '';
+    playedLetters.clear();
+    lettersPlayedCount = 0;
+
+    const allLetters = document.querySelectorAll('.letter');
+    allLetters.forEach(letterDiv => {
+      letterDiv.style.backgroundColor = '';
+    });
+  }
+</script>
+
+    <footer>
+        </br>
+		<img src="ismail.jpg" alt="Ismail">
+        <span>Presented by: Ismail Mokara </span><a href="https://web.facebook.com/ismail.mokara">Me in facebook</a>
+    </footer>
+
+</body>
+</html>
